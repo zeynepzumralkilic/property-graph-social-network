@@ -1,28 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "vertex_properties.h" // Kendi oluşturduğumuz başlık dosyasını dahil ettik
 
-typedef enum
-{
-    TYPE_USER,
-    TYPE_PHOTO,
-    TYPE_EVENT
-} VertexType;
-
-typedef struct Property
-{
-    char key[50];
-    char value[100];
-    struct Property *next;
-} Property;
-
-typedef struct Vertex
-{
-    int id;
-    VertexType type;
-    Property *properties;
-} Vertex;
-
+// Yeni düğüm oluşturma
 Vertex *createVertex(int id, VertexType type)
 {
     Vertex *newVertex = (Vertex *)malloc(sizeof(Vertex));
@@ -32,6 +10,7 @@ Vertex *createVertex(int id, VertexType type)
     return newVertex;
 }
 
+// Düğüme yeni özellik ekleme
 void addProperty(Vertex *vertex, const char *key, const char *value)
 {
     Property *newProp = (Property *)malloc(sizeof(Property));
@@ -54,6 +33,7 @@ void addProperty(Vertex *vertex, const char *key, const char *value)
     }
 }
 
+// Belleği temizleme
 void freeVertex(Vertex *vertex)
 {
     Property *temp = vertex->properties;
