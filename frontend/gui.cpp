@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include <string>
 
+
 std::string queryResult = "No query executed";
 
 struct VisualNode
@@ -90,7 +91,7 @@ int main()
 }
        
         BeginDrawing();
-    }
+    
 
 
         ClearBackground(RAYWHITE);
@@ -281,7 +282,7 @@ if(selectedNode==4)
     DrawText("Name : Konser",900,180,20,BLACK);
     DrawText("Location : Bursa",900,220,20,BLACK);
 }
-
+        }
         EndDrawing();
     }
 
