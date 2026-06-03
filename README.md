@@ -45,3 +45,124 @@ Bu proje 5 kişilik bir ekip tarafından geliştirilmiştir. Her ekip üyesi bel
 - Hash Table
 - BFS ve DFS algoritmaları
 - Çok adımlı sorgu sistemi
+
++--------------------+
+|       Node         |
++--------------------+
+| id : int           |
+| type : string      |
+| properties         |
++--------------------+
+
+```
+      ^
+      |
+      |
+```
+
++--------------------+
+|       Graph        |
++--------------------+
+| nodes[]            |
+| adjacencyList[]    |
++--------------------+
+| addNode()          |
+| addEdge()          |
+| printGraph()       |
++--------------------+
+
+```
+      |
+      |
+      v
+```
+
++--------------------+
+|       Edge         |
++--------------------+
+| sourceID           |
+| destinationID      |
+| relationType       |
++--------------------+
+
+---
+
++--------------------+
+|     HashTable      |
++--------------------+
+| table[]            |
++--------------------+
+| insert()           |
+| search()           |
+| delete()           |
++--------------------+
+
+---
+
++--------------------+
+|       Trie         |
++--------------------+
+| children[]         |
+| isEndOfWord        |
++--------------------+
+| insertWord()       |
+| searchWord()       |
+| autocomplete()     |
++--------------------+
+
+---
+
++--------------------+
+|       Queue        |
++--------------------+
+| front              |
+| rear               |
++--------------------+
+| enqueue()          |
+| dequeue()          |
+| isEmpty()          |
++--------------------+
+
+---
+
++----------------------------+
+|       Algorithms           |
++----------------------------+
+| BFS()                      |
+| DFS()                      |
+| shortestPath()             |
+| degreesOfSeparation()      |
+| socialQuery()              |
++----------------------------+
+
+---
+
++----------------------------+
+|      Frontend GUI          |
+|       (Raylib)             |
++----------------------------+
+| drawNodes()                |
+| drawEdges()                |
+| displayProperties()        |
+| executeQuery()             |
++----------------------------+
+|
+|
+v
++----------------------------+
+|      Backend Engine        |
++----------------------------+
+| Graph                      |
+| HashTable                  |
+| Trie                       |
+| Algorithms                 |
++----------------------------+
+|
+|
+v
++----------------------------+
+|       AI Service           |
+|       (Flask)              |
++----------------------------+
+| interpretQuery()           |
++----------------------------+
