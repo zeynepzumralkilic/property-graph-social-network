@@ -26,5 +26,13 @@ void shortestPath(
     Graph* graph,
     int startID,
     int targetID
-);                       
+);
+
+// String buffer versiyonları (GUI için)
+void BFS_toString(Graph* graph, int startID, char* buffer, int bufSize);
+void DFS_toString(Graph* graph, int startID, char* buffer, int bufSize);
+void shortestPath_toString(Graph* graph, int startID, int targetID, char* buffer, int bufSize);
+void searchNodesByType_toString(Graph* graph, const char* type, char* buffer, int bufSize);
+void searchRelationships_toString(Graph* graph, const char* relationType, char* buffer, int bufSize);
+
 #endif

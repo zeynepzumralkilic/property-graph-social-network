@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run Visualizer",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/visualizer",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "Build Project"
+        }
+    ]
+}

@@ -371,3 +371,214 @@ void shortestPath(
 
     printf("\n");
 }
+
+/* ===== GUI için string buffer versiyonları ===== */
+
+void BFS_toString(Graph* graph, int startID, char* buffer, int bufSize)
+{
+    buffer[0] = '\0';
+    int offset = 0;
+
+    Node* startNode = findNode(graph, startID);
+    if(startNode == NULL)
+    {
+        snprintf(buffer, bufSize, "Node %d bulunamadi!", startID);
+        return;
+    }
+
+    int visited[1000] = {0};
+    Queue* queue = createQueue();
+    visited[startID] = 1;
+    enqueue(queue, startNode);
+
+    offset += snprintf(buffer + offset, bufSize - offset, "BFS: ");
+
+    int first = 1;
+    while(!isEmpty(queue))
+    {
+        Node* current = dequeue(queue);
+
+        if(!first)
+            offset += snprintf(buffer + offset, bufSize - offset, " -> ");
+        offset += snprintf(buffer + offset, bufSize - offset, "%d", current->id);
+        first = 0;
+
+        Edge* edge = current->edges;
+        while(edge != NULL)
+        {
+            int neighborID = edge->targetID;
+            if(!visited[neighborID])
+            {
+                Node* neighbor = findNode(graph, neighborID);
+                if(neighbor != NULL)
+                {
+                    visited[neighborID] = 1;
+                    enqueue(queue, neighbor);
+                }
+            }
+            edge = edge->next;
+        }
+    }
+}
+
+void DFSUtil_toString(Graph* graph, Node* node, int visited[], char* buffer, int bufSize, int* offset, int* first)
+{
+    if(node == NULL) return;
+
+    visited[node->id] = 1;
+
+    if(!(*first))
+        *offset += snprintf(buffer + *offset, bufSize - *offset, " -> ");
+    *offset += snprintf(buffer + *offset, bufSize - *offset, "%d", node->id);
+    *first = 0;
+
+    Edge* edge = node->edges;
+    while(edge != NULL)
+    {
+        int neighborID = edge->targetID;
+        if(!visited[neighborID])
+        {
+            Node* neighbor = findNode(graph, neighborID);
+            DFSUtil_toString(graph, neighbor, visited, buffer, bufSize, offset, first);
+        }
+        edge = edge->next;
+    }
+}
+
+void DFS_toString(Graph* graph, int startID, char* buffer, int bufSize)
+{
+    buffer[0] = '\0';
+    int offset = 0;
+
+    Node* startNode = findNode(graph, startID);
+    if(startNode == NULL)
+    {
+        snprintf(buffer, bufSize, "Node %d bulunamadi!", startID);
+        return;
+    }
+
+    int visited[1000] = {0};
+    offset += snprintf(buffer + offset, bufSize - offset, "DFS: ");
+
+    int first = 1;
+    DFSUtil_toString(graph, startNode, visited, buffer, bufSize, &offset, &first);
+}
+
+void shortestPath_toString(Graph* graph, int startID, int targetID, char* buffer, int bufSize)
+{
+    buffer[0] = '\0';
+    int offset = 0;
+
+    int visited[1000] = {0};
+    int parent[1000];
+    for(int i = 0; i < 1000; i++)
+        parent[i] = -1;
+
+    Queue* queue = createQueue();
+    Node* start = findNode(graph, startID);
+
+    if(start == NULL)
+    {
+        snprintf(buffer, bufSize, "Node %d bulunamadi!", startID);
+        return;
+    }
+
+    enqueue(queue, start);
+    visited[startID] = 1;
+
+    int found = 0;
+    while(!isEmpty(queue))
+    {
+        Node* current = dequeue(queue);
+        if(current->id == targetID)
+        {
+            found = 1;
+            break;
+        }
+
+        Edge* edge = current->edges;
+        while(edge != NULL)
+        {
+            int nextID = edge->targetID;
+            if(!visited[nextID])
+            {
+                visited[nextID] = 1;
+                parent[nextID] = current->id;
+                enqueue(queue, findNode(graph, nextID));
+            }
+            edge = edge->next;
+        }
+    }
+
+    if(!found)
+    {
+        snprintf(buffer, bufSize, "Yol bulunamadi: %d -> %d", startID, targetID);
+        return;
+    }
+
+    int path[100];
+    int count = 0;
+    int current = targetID;
+    while(current != -1)
+    {
+        path[count++] = current;
+        current = parent[current];
+    }
+
+    offset += snprintf(buffer + offset, bufSize - offset, "Shortest: ");
+    for(int i = count - 1; i >= 0; i--)
+    {
+        offset += snprintf(buffer + offset, bufSize - offset, "%d", path[i]);
+        if(i != 0)
+            offset += snprintf(buffer + offset, bufSize - offset, " -> ");
+    }
+}
+
+void searchNodesByType_toString(Graph* graph, const char* type, char* buffer, int bufSize)
+{
+    buffer[0] = '\0';
+    int offset = 0;
+
+    Node* current = graph->nodeList;
+    offset += snprintf(buffer + offset, bufSize - offset, "%s nodes: ", type);
+
+    int first = 1;
+    while(current != NULL)
+    {
+        if(strcmp(current->type, type) == 0)
+        {
+            if(!first)
+                offset += snprintf(buffer + offset, bufSize - offset, ", ");
+            offset += snprintf(buffer + offset, bufSize - offset, "%d", current->id);
+            first = 0;
+        }
+        current = current->next;
+    }
+}
+
+void searchRelationships_toString(Graph* graph, const char* relationType, char* buffer, int bufSize)
+{
+    buffer[0] = '\0';
+    int offset = 0;
+
+    Node* node = graph->nodeList;
+    offset += snprintf(buffer + offset, bufSize - offset, "%s: ", relationType);
+
+    int first = 1;
+    while(node != NULL)
+    {
+        Edge* edge = node->edges;
+        while(edge != NULL)
+        {
+            if(strcmp(edge->relationType, relationType) == 0)
+            {
+                if(!first)
+                    offset += snprintf(buffer + offset, bufSize - offset, ", ");
+                offset += snprintf(buffer + offset, bufSize - offset, "%d->%d", node->id, edge->targetID);
+                first = 0;
+            }
+            edge = edge->next;
+        }
+        node = node->next;
+    }
+}
